@@ -12,8 +12,8 @@ def calc_char(c):
 def part_1(inputlines):
     sum = 0
     for line in inputlines:
-        half_line = len(line)//2  # this will give type int
-        first = line[: half_line]
+        half_line = len(line) // 2  # this will give type int
+        first = line[:half_line]
         second = line[half_line:]
         char = next(iter(set(first).intersection(set(second))))
         sum += calc_char(char)
@@ -23,7 +23,7 @@ def part_1(inputlines):
 def chunks(lst, n):
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+        yield lst[i : i + n]
 
 
 def part_2(inputlines):
