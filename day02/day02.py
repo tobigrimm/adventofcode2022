@@ -1,5 +1,4 @@
 import sys
-from collections import Counter
 
 """First column: Opponent - A for Rock, B for Paper, and C for Scissors
    The second column, you reason, must be what you should play in response: X for Rock, Y for Paper, and Z for Scissors. 
@@ -20,7 +19,6 @@ def calculate_round_part1(game_line) -> int:
     opp = game_line[0]
     myself = game_line[1]
     chosen_score = {"X": 1, "Y": 2, "Z": 3}
-    outcome_score = 0
 
     wins = {"X": "C", "Z": "B", "Y": "A"}
 
@@ -39,14 +37,11 @@ def calculate_round_part1(game_line) -> int:
 def calculate_round_part2(game_line) -> int:
     opp = game_line[0]
     goal = game_line[1]
-    myself = "" # needs to  be set!
     chosen_score = {"A": 1, "B": 2, "C": 3}
     outcome_score = {"X": 0, "Y": 3, "Z": 6}
 
     wins = {"A": "C", "C": "B", "B": "A"}
     lose = {v: k for k, v in wins.items()}
-
-    draw = {"A": "X", "B": "Y", "C": "Z"}
 
     if outcome_score[goal] == 0:
         # lose - opponent wins
@@ -59,6 +54,7 @@ def calculate_round_part2(game_line) -> int:
         myself = lose[opp]
 
     return outcome_score[goal] + chosen_score[myself]
+
 
 if __name__ == "__main__":
     with open(sys.argv[1], "r") as input_file:
