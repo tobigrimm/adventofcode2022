@@ -21,17 +21,24 @@ def part_1(inputlines):
 
 
 def chunks(lst, n):
-    """Yield successive n-sized chunks from lst."""
+    """Create n-sized chunked from given list lst """
     for i in range(0, len(lst), n):
-        yield lst[i : i + n]
+        yield lst[i: i + n]
 
 
 def part_2(inputlines):
     sum = 0
     grouped = chunks(inputlines, 3)
-    for group in grouped:
-        a, b, c = group
-        char = next(iter(set(a).intersection(set(b)).intersection(set(c))))
+    for chunked_groups in grouped:
+        initial_set = None
+        # work on arbitrary chunk sizes
+        for group in chunked_groups:
+            if initial_set:
+                intial_set = initial_set.intersection(set(group))
+            else:
+                initial_set = set(group)
+
+        char = next(iter(initial_set))
         sum += calc_char(char)
     return sum
 
