@@ -1,12 +1,9 @@
-import collections
 import sys
-import copy
-from collections import defaultdict
 from itertools import islice
 from typing import Iterable
 
 
-def window(seq: Iterable, n:int =2) -> Iterable:
+def window(seq: Iterable, n: int = 2) -> Iterable:
     "Returns a sliding window (of width n) over data from the iterable"
     "   s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...                   "
     it = iter(seq)
@@ -18,7 +15,7 @@ def window(seq: Iterable, n:int =2) -> Iterable:
         yield result
 
 
-def calc_start(line: str, window_size: int =4) -> int:
+def calc_start(line: str, window_size: int = 4) -> int:
     for seq in enumerate(window(line, window_size)):
         index, chars = seq
         if len(set(chars)) == len(chars):
