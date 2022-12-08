@@ -50,24 +50,31 @@ if __name__ == "__main__":
                             part1 += 1
                             visible_trees.append((x, y))
                             break
+    trees_visible = {}
+    for x in range(0, max_x):
+        for y in range(0, max_y):
+            cur_tree = grid[(x, y)]
+            if x == 0 or y == 0 or x == max_x - 1 or y == max_y - 1:
+                # were at the edge, so 0 factor will be 0 and due to multiplication the scenic score will be 0
+                #   eg 1 * 1 * 2 * 0 = 0
+                trees_visible[(x, y)] = 0
+            else:
+                scenic_score = 1
+                for direction in DIRECTIONS:
+                    check_coord = (x, y)
+                    result_dir_score = 0
+                    while 0 < check_coord[0] < max_x - 1 and 0 < check_coord[1] < max_y - 1:
+                        check_coord = tuple(map(add, check_coord, direction))
+                        result_dir_score += 1
 
-    #for y in range(5):
-    #    line = ""
-    #    for x in range(5):
-    #        #if (x, y) in visible_trees:
-    #        line += str(grid[(x, y)])
-    #    print(line)
+                        # stop checking visibility in this direction if there is a higher tree
+                        if cur_value := grid[check_coord] >= cur_tree:
+                            break
 
-    #print(" ---  ")
+                    # if a tree is visible in one direction, we can stop looking and move to the next direction
+                    scenic_score *= result_dir_score
+                    trees_visible[(x,y)] = scenic_score
 
-    #for y in range(5):
-    #    line = ""
-    #    for x in range(5):
-    #        if (x,y) in visible_trees:
-    #            line += str(grid[(x,y)])
-    #        else:
-    #            line += " "
-    #    print(line)
-    part2 = 0
+    part2 = max(trees_visible.values())
     print(f"Part 1: {part1}")
     print(f"Part 2: {part2}")
