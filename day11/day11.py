@@ -5,8 +5,7 @@ from collections.abc import Iterable
 from typing import Tuple
 import networkx
 from operator import add, mul
-from collections import defaultdict
-import queue
+from collections import deque
 import math
 
 
@@ -14,9 +13,7 @@ class Monkey:
     def __init__(self, nr: int, startitems: list[int], op_string, test_function, monkey_if_true: int,
                  monkey_if_false: int):
         self.nr = nr
-        self.items = queue.Queue()
-        for item in startitems:
-            self.items.put(item)
+        self.items = deque(startitems)
         self.op = lambda old: eval(op_string)
         self.test_value = test_value
         self.true_monkey = monkey_if_true
@@ -25,20 +22,18 @@ class Monkey:
 
     def calculate(self, worry_reducer=None):
         throw_item_list = []
-        while not self.items.empty():
-            item = self.items.get()
+        for item in self.items:
             self.inspection_count += 1
             worry_level = self.op(item)
             if not worry_reducer:
                 worry_level = worry_level // 3
             else:
                 worry_level = worry_level % worry_reducer
-            # print(self.nr, item, worry_level)
             if worry_level % self.test_value == 0:
                 throw_item_list.append((self.true_monkey, worry_level))
             else:
                 throw_item_list.append((self.false_monkey, worry_level))
-
+        self.items.clear()
         return throw_item_list
 
 
@@ -47,7 +42,7 @@ def calc_monkey_business(monkeys, worry_reducer: int | None = None):
         for monkey in monkeys:
             throw_list = monkey.calculate()
             for new_monkey, item in throw_list:
-                monkeys[new_monkey].items.put(item)
+                monkeys[new_monkey].items.append(item)
 
         # print(f"Round {r}")
         # for monkey in monkeys:
